@@ -18,7 +18,7 @@ with open("data/rd_2024.json") as f:
 def get_games():
     try:
         data = request.get_json()
-        print("📥 Received POST /games with data:", data)
+        print("Received POST /games with data:", data)
 
         favorite = data.get("favorite", "").strip()
         follows = data.get("follows", [])
