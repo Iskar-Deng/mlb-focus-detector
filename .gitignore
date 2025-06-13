@@ -1,3 +1,4 @@
 venv/
 arc/
 utils/
+start_server.sh

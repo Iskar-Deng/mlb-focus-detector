@@ -27,6 +27,16 @@ def analyze_state_focus(
             "focus_score_norm": int
         }
     """
+
+    if state.startswith("3_outs"):
+        print("[DEBUG] 3 outs detected, shifting to next half-inning...")
+        state = "0_outs__000"
+        if half == "top":
+            half = "bot"
+        else:
+            half = "top"
+            inning += 1
+
     key = f"{inning}_{half}"
     if key not in we_dict or state not in rd_dict:
         raise ValueError("Missing WE or RD data for given state.")

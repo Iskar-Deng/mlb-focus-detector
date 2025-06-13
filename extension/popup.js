@@ -8,11 +8,11 @@ const TEAM_ID = {
 
 function getFocusColor(value) {
   const num = Number(value);
-  if (num < 50) return '#3498db';     
-  if (num < 120) return '#27ae60';    
-  if (num < 180) return '#f1c40f';    
-  if (num < 250) return '#e67e22';    
-  return '#e74c3c';                  
+  if (num < 50) return '#3498db';
+  if (num < 120) return '#27ae60';
+  if (num < 180) return '#f1c40f';
+  if (num < 250) return '#e67e22';
+  return '#e74c3c';
 }
 
 function fetchGamesAndRender() {
@@ -40,12 +40,11 @@ function fetchGamesAndRender() {
           const isInProgress = game.status === "In Progress";
           const isFinal = game.status === "Final" || game.status === "Game Over";
 
-          // 状态描述
           let inningHalfText = "", outsText = "", focusText = "", baseBoxesHTML = "";
 
           if (isInProgress) {
             const inning = game.inning ?? "?";
-            const half = game.half ?? "";
+            const half = (game.half ?? "").charAt(0).toUpperCase() + (game.half ?? "").slice(1, 3);
             const outs = game.state?.split("_")[0] || "?";
             const baseState = game.state?.split("__")[1] || "000";
 
@@ -92,17 +91,31 @@ function fetchGamesAndRender() {
               ${isInProgress ? `<div class="bases-wrapper">${baseBoxesHTML}</div>` : ""}
             </div>
             <div class="focus-column">
-              ${isInProgress ? `<div class="focus" style="color: ${getFocusColor(focusText)}">${focusText}</div>` : ""}
+              ${isInProgress ? `<div class="focus" style="color: ${getFocusColor(focusText)}" data-id="${game.game_id}">${focusText}</div>` : ""}
             </div>
           `;
 
           div.innerHTML = html;
-
           if (game.game_id) {
             div.addEventListener("click", () => {
               const url = `https://www.mlb.com/gameday/${game.game_id}`;
               window.open(url, "_blank");
             });
+
+            const focusElem = div.querySelector(".focus");
+            if (focusElem) {
+              focusElem.addEventListener("click", e => {
+                e.stopPropagation();
+                focusElem.classList.add("click-animate");
+                setTimeout(() => focusElem.classList.remove("click-animate"), 300);
+
+                const id = focusElem.dataset.id;
+                if (id) {
+                  const tvUrl = `https://www.mlb.com/tv/g${id}`;
+                  window.open(tvUrl, "_blank");
+                }
+              });
+            }
           }
 
           container.appendChild(div);

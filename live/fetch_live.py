@@ -1,11 +1,10 @@
-# live/fetch_live.py
-
 from typing import List, Dict
 import statsapi
 from datetime import datetime
 
 def get_current_game_states() -> Dict[str, List[Dict]]:
     today_str = datetime.today().strftime('%Y-%m-%d')
+    print(f"[INFO] Fetching MLB games for {today_str}")
     games = statsapi.schedule(start_date=today_str, end_date=today_str)
 
     result = {
@@ -20,58 +19,49 @@ def get_current_game_states() -> Dict[str, List[Dict]]:
         home = g.get('home_abbrev') or g['home_name']
         away = g.get('away_abbrev') or g['away_name']
 
+        print(f"[INFO] Processing game: {away} @ {home} — status: {status}")
+
         if status == 'In Progress':
-            linescore = statsapi.linescore(game_pk)
-            inning = int(linescore['currentInning'])
-            half = linescore['inningHalf']
-            batting_home = (half == 'bot')
-
-            batting_team = home if batting_home else away
-            fielding_team = away if batting_home else home
-
-            outs = linescore['outs']
-            base_state = "".join(
-                '1' if linescore['onbase'].get(base, False) else '0'
-                for base in ['first', 'second', 'third']
-            )
-
-            state = f"{outs}_outs__{base_state}"
-            home_runs = linescore['r']['home']
-            away_runs = linescore['r']['away']
-
-            boxscore = statsapi.boxscore(game_pk)
-            pitcher = boxscore.get("teamInfo", {}).get("pitching", {}).get("players", {})
-            batter = boxscore.get("teamInfo", {}).get("batting", {}).get("players", {})
-
-            current_pitcher = statsapi.get("game", {"gamePk": game_pk})["liveData"]["boxscore"]["pitchers"]
-            current_batter = statsapi.get("game", {"gamePk": game_pk})["liveData"]["boxscore"]["batter"]
-
             try:
-                pitcher_name = statsapi.player_stat_data(current_pitcher)["playerInfo"]["fullName"]
-            except:
-                pitcher_name = "Pitcher"
+                game_data = statsapi.get("game", {"gamePk": game_pk})
+                linescore = game_data["liveData"]["linescore"]
 
-            try:
-                batter_name = statsapi.player_stat_data(current_batter)["playerInfo"]["fullName"]
-            except:
-                batter_name = "Batter"
+                inning = int(linescore["currentInning"])
+                half = linescore["inningHalf"][:3]
+                batting_home = (half.lower() == "bot")
 
-            result['in_progress'].append({
-                "game_id": game_pk,
-                "status": status,
-                "inning": inning,
-                "half": half,
-                "batting_home": batting_home,
-                "batting_team": batting_team,
-                "fielding_team": fielding_team,
-                "home_team": home,
-                "away_team": away,
-                "home_runs": home_runs,
-                "away_runs": away_runs,
-                "state": state,
-                "pitcher": pitcher_name,
-                "batter": batter_name,
-            })
+                batting_team = home if batting_home else away
+                fielding_team = away if batting_home else home
+
+                outs = linescore.get("outs", 0)
+                offense = linescore.get("offense", {})
+                base_state = "".join([
+                    "1" if base in offense else "0"
+                    for base in ["first", "second", "third"]
+                ])
+
+                state = f"{outs}_outs__{base_state}"
+                home_runs = linescore["teams"]["home"]["runs"]
+                away_runs = linescore["teams"]["away"]["runs"]
+
+                print(f"[DEBUG] Game {game_pk}: inning={inning}, half={half}, outs={outs}, bases={base_state}, state={state}, score={away_runs}-{home_runs}")
+
+                result["in_progress"].append({
+                    "game_id": game_pk,
+                    "status": status,
+                    "inning": inning,
+                    "half": half,
+                    "batting_home": batting_home,
+                    "batting_team": batting_team,
+                    "fielding_team": fielding_team,
+                    "home_team": home,
+                    "away_team": away,
+                    "home_runs": home_runs,
+                    "away_runs": away_runs,
+                    "state": state
+                })
+            except Exception as e:
+                print(f"[ERROR] Failed to parse in-progress game {game_pk}: {e}")
 
         elif status in ['Final', 'Game Over']:
             result['final'].append({
@@ -92,4 +82,5 @@ def get_current_game_states() -> Dict[str, List[Dict]]:
                 "game_time": g.get('game_datetime', g.get('game_time', 'N/A'))
             })
 
+    print(f"[INFO] Done. {len(result['in_progress'])} in-progress, {len(result['final'])} final, {len(result['not_started'])} not started.")
     return result
