@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "MLB Focus",
+  "version": "1.0",
+  "description": "View MLB game intensity & follow your teams.",
+  "permissions": ["storage", "contextMenus"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

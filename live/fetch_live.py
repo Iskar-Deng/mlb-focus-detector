@@ -39,6 +39,23 @@ def get_current_game_states() -> Dict[str, List[Dict]]:
             home_runs = linescore['r']['home']
             away_runs = linescore['r']['away']
 
+            boxscore = statsapi.boxscore(game_pk)
+            pitcher = boxscore.get("teamInfo", {}).get("pitching", {}).get("players", {})
+            batter = boxscore.get("teamInfo", {}).get("batting", {}).get("players", {})
+
+            current_pitcher = statsapi.get("game", {"gamePk": game_pk})["liveData"]["boxscore"]["pitchers"]
+            current_batter = statsapi.get("game", {"gamePk": game_pk})["liveData"]["boxscore"]["batter"]
+
+            try:
+                pitcher_name = statsapi.player_stat_data(current_pitcher)["playerInfo"]["fullName"]
+            except:
+                pitcher_name = "Pitcher"
+
+            try:
+                batter_name = statsapi.player_stat_data(current_batter)["playerInfo"]["fullName"]
+            except:
+                batter_name = "Batter"
+
             result['in_progress'].append({
                 "game_id": game_pk,
                 "status": status,
@@ -51,7 +68,9 @@ def get_current_game_states() -> Dict[str, List[Dict]]:
                 "away_team": away,
                 "home_runs": home_runs,
                 "away_runs": away_runs,
-                "state": state
+                "state": state,
+                "pitcher": pitcher_name,
+                "batter": batter_name,
             })
 
         elif status in ['Final', 'Game Over']:

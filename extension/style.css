@@ -1,0 +1,174 @@
+body {
+  font-family: system-ui, sans-serif;
+  padding: 10px;
+  width: 290px;
+  font-size: 13px;
+  background: #f9f9f9;
+}
+
+.game {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.04);
+  gap: 10px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.left {
+  position: relative;
+  width: 120px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.score-num {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.score-inprogress {
+  color: #d32f2f; 
+}
+
+.score-final {
+  color: #000;
+}
+
+.score-label {
+  font-size: 10px;
+  color: #555;
+}
+
+.logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+  position: absolute;
+  top: 0;
+}
+
+.logo.away {
+  left: 0;
+}
+
+.logo.home {
+  right: 0;
+}
+.score-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.info-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 200px;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.middle {
+  flex-grow: 0;
+  max-width: 200px;
+  margin-left: 4px;
+  color: #444;
+  font-size: 12px; 
+}
+
+.middle .line1 {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+}
+
+.middle .line2 {
+  font-size: 13px;
+  color: #222;
+  line-height: 1.2;
+  font-weight: bold;
+}
+
+.focus-column {
+  display: flex;
+  align-items: center;  /* 垂直居中 */
+  justify-content: flex-end; /* 右对齐 */
+  width: 40px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-right: 4px;
+  margin-left: auto
+}
+
+.tag {
+  font-weight: bold;
+  color: #f90;
+}
+
+.focus {
+  font-size: 24px; 
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.bases {
+  position: relative;
+  width: 24px;
+  height: 20px;
+}
+
+.base {
+  width: 11px;
+  height: 11px;
+  background-color: #ccc;
+  position: absolute;
+  transform: rotate(45deg);
+  box-sizing: border-box;
+}
+
+.base.on {
+  background-color: #d69a2a;
+}
+
+.base.b2 {
+  top: 0;
+  left: 8.46px;
+}
+
+.base.b1 {
+  bottom: 0;
+  right: -5px;
+}
+
+.base.b3 {
+  bottom: 0;
+  left: 0;
+}
+
+.bases-wrapper {
+  width: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.game:hover {
+  background-color: #f0f0f0;
+}
