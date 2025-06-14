@@ -136,7 +136,8 @@ def analyze_state_focus(
     else:  # 9 or later
         leverage_multiplier = 2.0
 
-    adjusted_focus = focus_score * leverage_multiplier
+    half_score = 1.3 if half == "bot" else 1
+    adjusted_focus = focus_score * leverage_multiplier * half_score
 
     # Normalize score
     focus_score_norm = int(round(100 * adjusted_focus / baseline_focus_score)) if baseline_focus_score > 0 else 0

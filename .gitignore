@@ -2,3 +2,4 @@ venv/
 arc/
 utils/
 start_server.sh
+__pycache__/
