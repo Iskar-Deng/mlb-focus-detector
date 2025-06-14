@@ -31,3 +31,4 @@ The more a scoring event would swing the win probability, the higher the focus s
 4. Click the extension icon to view games
 5. Click any game to open its Gameday page
 6. Click the focus score to open the MLB.TV stream
+7. Right-click the extension icon to set your timezone and favorite/follow teams — those games will be prioritized
