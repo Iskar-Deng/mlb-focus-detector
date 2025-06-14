@@ -123,6 +123,7 @@ body {
   transition: color 0.3s ease;
   display: inline-block;
 }
+
 .focus:hover {
   transform: scale(1.15);
   cursor: pointer;
