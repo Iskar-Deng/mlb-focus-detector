@@ -25,7 +25,7 @@ The more a scoring event would swing the win probability, the higher the focus s
 
 ## How to Use
 
-1. Load this extension via `chrome://extensions/`
+1. Load this extension (the `extension` folder) via `chrome://extensions/` in Developer Mode
 2. Install the required dependencies via `pip install -r requirements.txt`
 3. Run `server.py` in this directory
 4. Click the extension icon to view games
