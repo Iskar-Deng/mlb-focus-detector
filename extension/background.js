@@ -94,3 +94,13 @@ chrome.contextMenus.onClicked.addListener((info) => {
     });
   }
 });
+
+function keepServerAlive() {
+  fetch("https://mlb-focus-detector.onrender.com/ping")
+    .then(() => console.log("[PING] Sent to Render server"))
+    .catch(() => console.warn("[PING] Failed to reach server"));
+}
+
+keepServerAlive();
+
+setInterval(keepServerAlive, 60 * 1000);
