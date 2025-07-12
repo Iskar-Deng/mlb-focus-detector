@@ -178,3 +178,7 @@ body {
 .game:hover {
   background-color: #f0f0f0;
 }
+
+.highlight-status {
+  font-weight: bold;
+}
