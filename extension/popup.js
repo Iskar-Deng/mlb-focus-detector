@@ -17,7 +17,7 @@ function getFocusColor(value) {
 
 function fetchGamesAndRender() {
   chrome.storage.sync.get(["favorite", "follows", "timezone"], prefs => {
-    fetch("http://localhost:8000/games", {
+    fetch("https://mlb-focus-detector.onrender.com/games", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(prefs)

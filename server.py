@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
+import os
 
 from rules.rank_games import rank_games
 from rules import rank_games as rg_module
@@ -33,5 +34,6 @@ def get_games():
 
 
 if __name__ == "__main__":
-    app.run(port=8000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
 
