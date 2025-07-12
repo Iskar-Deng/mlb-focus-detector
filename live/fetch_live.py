@@ -1,8 +1,31 @@
 from typing import List, Dict
 import statsapi
 import pytz
+import os
 from datetime import datetime
 
+STATUS_LOG_FILE = "logs/status_seen.log"
+
+def log_status_to_file(status: str):
+    status = status.strip()
+    if not status:
+        return
+
+    today_str = datetime.today().strftime("%Y-%m-%d")
+    log_line = f"{today_str} | {status}"
+
+    if not os.path.exists(STATUS_LOG_FILE):
+        with open(STATUS_LOG_FILE, "w") as f:
+            f.write("")
+
+    with open(STATUS_LOG_FILE, "r") as f:
+        seen_lines = set(line.strip() for line in f.readlines())
+
+    if log_line not in seen_lines:
+        with open(STATUS_LOG_FILE, "a") as f:
+            f.write(log_line + "\n")
+        print(f"[LOG] New game status logged: {log_line}")
+        
 def get_current_game_states() -> Dict[str, List[Dict]]:
     pacific = pytz.timezone("US/Pacific")
     today_pt = datetime.now(pacific).strftime('%Y-%m-%d')
@@ -17,6 +40,7 @@ def get_current_game_states() -> Dict[str, List[Dict]]:
 
     for g in games:
         status = g['status']
+        log_status_to_file(status)
         game_pk = g['game_id']
         home = g.get('home_abbrev') or g['home_name']
         away = g.get('away_abbrev') or g['away_name']
