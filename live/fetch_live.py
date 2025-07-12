@@ -3,14 +3,11 @@ import statsapi
 import pytz
 from datetime import datetime
 
-def get_current_game_states(timezone_str: str) -> Dict[str, List[Dict]]:
-    try:
-        tz = pytz.timezone(timezone_str)
-    except:
-        tz = pytz.UTC  # fallback
-    today_str = datetime.today().strftime('%Y-%m-%d')
-    print(f"[INFO] Fetching MLB games for {today_str}")
-    games = statsapi.schedule(start_date=today_str, end_date=today_str)
+def get_current_game_states() -> Dict[str, List[Dict]]:
+    pacific = pytz.timezone("US/Pacific")
+    today_pt = datetime.now(pacific).strftime('%Y-%m-%d')
+    print(f"[INFO] Fetching MLB games for {today_pt}")
+    games = statsapi.schedule(start_date=today_pt, end_date=today_pt)
 
     result = {
         "not_started": [],
