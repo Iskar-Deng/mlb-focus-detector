@@ -6,7 +6,7 @@ def get_current_game_states() -> Dict[str, List[Dict]]:
     today_str = datetime.now(timezone.utc).strftime('%Y-%m-%d')
     print(f"[INFO] Fetching MLB games for {today_str}")
     games = statsapi.schedule(start_date=today_str, end_date=today_str)
-
+    print("[DEBUG] games returned from statsapi.schedule:")
     result = {
         "not_started": [],
         "in_progress": [],
