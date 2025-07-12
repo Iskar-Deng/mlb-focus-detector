@@ -16,11 +16,15 @@ function getFocusColor(value) {
 }
 
 function fetchGamesAndRender() {
-  chrome.storage.sync.get(["favorite", "follows", "timezone"], prefs => {
+  chrome.storage.sync.get(["favorite", "follows"], prefs => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     fetch("https://mlb-focus-detector.onrender.com/games", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(prefs)
+      body: JSON.stringify({
+        ...prefs,
+        timezone
+  })
     })
       .then(res => res.json())
       .then(data => {
@@ -127,4 +131,7 @@ function fetchGamesAndRender() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", fetchGamesAndRender);
+document.addEventListener("DOMContentLoaded", () => {
+  fetchGamesAndRender();
+  setInterval(fetchGamesAndRender, 60000);
+});

@@ -70,23 +70,6 @@ chrome.runtime.onInstalled.addListener(() => {
       contexts: ["action"]
     });
   }
-
-  // Timezone
-  chrome.contextMenus.create({
-    id: "tz_group",
-    title: "Select Time Zone",
-    contexts: ["action"]
-  });
-
-  TIMEZONES.forEach(tz => {
-    chrome.contextMenus.create({
-      id: `tz_${tz}`,
-      parentId: "tz_group",
-      title: tz,
-      type: "radio",
-      contexts: ["action"]
-    });
-  });
 });
 
 // Handle clicks
@@ -109,11 +92,5 @@ chrome.contextMenus.onClicked.addListener((info) => {
       }
       chrome.storage.sync.set({ follows: [...follows] });
     });
-  }
-
-  // Timezone
-  if (info.menuItemId.startsWith("tz_")) {
-    const tz = info.menuItemId.replace("tz_", "");
-    chrome.storage.sync.set({ timezone: tz });
   }
 });
