@@ -9,7 +9,6 @@ from rules import rank_games as rg_module
 app = Flask(__name__)
 CORS(app)
 
-# Load WE and RD data once at startup
 with open("data/we.json") as f:
     we_dict = json.load(f)
 with open("data/rd_2024.json") as f:
@@ -32,8 +31,10 @@ def get_games():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
+@app.route("/ping")
+def ping():
+    return "pong"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
-

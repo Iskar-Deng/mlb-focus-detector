@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2025-07-11
+### Changed
+- Backend now **always fetches games based on US/Eastern date**, ensuring consistent game listings regardless of server time zone.
+- Frontend no longer requires manual time zone selection.
+- Automatically uses user's **local browser time zone** for game time formatting.
+
+### Added
+- Periodic fetch: **auto-refresh every 60 seconds** while popup is open, to keep data current and prevent Render backend from sleeping.
+
+### Removed
+- Time zone selection menu from extension context menu.
+  
+### Fixed
+- Incorrect or missing game states (e.g. status stuck at “Scheduled”) caused by UTC-based date fetching in cloud deployment.
+
+---
+
 ## [1.0.0] - 2025-06-13
 ### Added
 - Chrome extension UI for live MLB game display

@@ -25,10 +25,7 @@ The more a scoring event would swing the win probability, the higher the focus s
 
 ## How to Use
 
-1. Load this extension via `chrome://extensions/`
-2. Install the required dependencies via `pip install -r requirements.txt`
-3. Run `server.py` in this directory
-4. Click the extension icon to view games
-5. Click any game to open its Gameday page
-6. Click the focus score to open the MLB.TV stream
-7. Right-click the extension icon to set your timezone and favorite/follow teams — those games will be prioritized
+1. Click the extension icon to view games
+2. Click any game to open its Gameday page
+3. Click the focus score to open the MLB.TV stream
+4. Right-click the extension icon to set your timezone and favorite/follow teams — those games will be prioritized
