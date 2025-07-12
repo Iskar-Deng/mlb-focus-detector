@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 ## [1.1.1] - 2025-07-12
   
 ### Fixed
-- Incorrect game states **Delayed Started**.
+- Incorrect game states **Delayed Start** were not displayed correctly in frontend.
+- Now shows `"1:10 PM Delayed Start"` in bold, or similar for other unexpected status values.
+
+![Delayed start fixed UI](assets/delay-fixed.png)
 
 ---
 
