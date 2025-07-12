@@ -83,10 +83,13 @@ function fetchGamesAndRender() {
             if (status === "Warmup") {
               inningHalfText = `<span class="highlight-status">Warmup</span>`;
             } else if (status !== "Scheduled" && status !== "Pre-Game") {
+              const trimmedStatus = status.split(":")[0].trim();
+              const shortStatus = trimmedStatus.split(" ").slice(0, 2).join(" ");
               inningHalfText = game.game_time
-                ? `${cleanTime} <span class="highlight-status">${status}</span>`
-                : `<span class="highlight-status">${status}</span>`;
-            } else {
+                ? `${cleanTime} <span class="highlight-status">${shortStatus}</span>`
+                : `<span class="highlight-status">${shortStatus}</span>`;
+            }
+            else {
               inningHalfText = game.game_time
                 ? `${cleanTime} (${timezoneLabel})`
                 : "Scheduled";
