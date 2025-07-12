@@ -14,6 +14,8 @@ def log_status_to_file(status: str):
     today_str = datetime.today().strftime("%Y-%m-%d")
     log_line = f"{today_str} | {status}"
 
+    os.makedirs(os.path.dirname(STATUS_LOG_FILE), exist_ok=True)
+    
     if not os.path.exists(STATUS_LOG_FILE):
         with open(STATUS_LOG_FILE, "w") as f:
             f.write("")

@@ -35,6 +35,18 @@ def get_games():
 def ping():
     return "pong"
 
+@app.route("/status-log", methods=["GET"])
+def get_status_log():
+    try:
+        log_path = "logs/status_seen.log"
+        if not os.path.exists(log_path):
+            return jsonify({"log": []})
+        with open(log_path, "r") as f:
+            lines = f.readlines()
+        return jsonify({"log": [line.strip() for line in lines]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
