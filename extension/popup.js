@@ -6,6 +6,13 @@ const TEAM_ID = {
   "SEA": 136, "STL": 138, "TB": 139, "TEX": 140, "TOR": 141, "WSH": 120
 };
 
+const TIMEZONE_LABELS = {
+  "America/Los_Angeles": "Pacific",
+  "America/Denver": "Mountain",
+  "America/Chicago": "Central",
+  "America/New_York": "Eastern"
+};
+
 function getFocusColor(value) {
   const num = Number(value);
   if (num < 50) return '#3498db';
@@ -18,13 +25,15 @@ function getFocusColor(value) {
 function fetchGamesAndRender() {
   chrome.storage.sync.get(["favorite", "follows"], prefs => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezoneLabel = TIMEZONE_LABELS[timezone] || timezone;
+
     fetch("https://mlb-focus-detector.onrender.com/games", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...prefs,
         timezone
-  })
+      })
     })
       .then(res => res.json())
       .then(data => {
@@ -68,7 +77,10 @@ function fetchGamesAndRender() {
             inningHalfText = "Final";
             outsText = "";
           } else {
-            inningHalfText = game.game_time || "Scheduled";
+            const cleanTime = (game.game_time || "").split(" ").slice(0, 2).join(" ");
+            inningHalfText = game.game_time
+              ? `${cleanTime} ${timezoneLabel}`
+              : "Scheduled";
             outsText = "";
           }
 
@@ -100,6 +112,7 @@ function fetchGamesAndRender() {
           `;
 
           div.innerHTML = html;
+
           if (game.game_id) {
             div.addEventListener("click", () => {
               const url = `https://www.mlb.com/gameday/${game.game_id}`;
