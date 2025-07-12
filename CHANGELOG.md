@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2025-07-12
+  
+### Fixed
+- Incorrect game states **Delayed Started**.
+
+---
+
 ## [1.1.0] - 2025-07-11
 ### Changed
 - Backend now **always fetches games based on US/Eastern date**, ensuring consistent game listings regardless of server time zone.

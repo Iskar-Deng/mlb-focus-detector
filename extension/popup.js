@@ -79,15 +79,19 @@ function fetchGamesAndRender() {
           } else {
             const status = game.status || "";
             const cleanTime = (game.game_time || "").split(" ").slice(0, 2).join(" ");
-            if (status === "Delayed") {
-              inningHalfText = `<span class="highlight-status">${cleanTime} Delayed Start</span>`;
-            } else if (status === "Warmup") {
-              inningHalfText = `<span class="highlight-status"> Warmup</span>`;
+
+            if (status === "Warmup") {
+              inningHalfText = `<span class="highlight-status">Warmup</span>`;
+            } else if (status !== "Scheduled" && status !== "Pre-Game") {
+              inningHalfText = game.game_time
+                ? `${cleanTime} <span class="highlight-status">${status}</span>`
+                : `<span class="highlight-status">${status}</span>`;
             } else {
               inningHalfText = game.game_time
                 ? `${cleanTime} (${timezoneLabel})`
                 : "Scheduled";
             }
+
             outsText = "";
           }
 

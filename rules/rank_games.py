@@ -32,15 +32,10 @@ def rank_games(we_dict, rd_dict, favorite, follows, timezone):
     tz = pytz.timezone(timezone)
 
     game_states = get_current_game_states()
-    ranked = {
-        "in_progress": [],
-        "delayed": [],
-        "not_started": [],
-        "final": []
-    }
+    ranked = {"in_progress": [], "not_started": [], "final": []}
 
-    for group in ranked.keys():
-        for game in game_states.get(group, []):
+    for group in ["in_progress", "not_started", "final"]:
+        for game in game_states[group]:
             priority = min(
                 team_priority(game["home_team"], favorite, follows),
                 team_priority(game["away_team"], favorite, follows)
@@ -71,12 +66,13 @@ def rank_games(we_dict, rd_dict, favorite, follows, timezone):
                     game["focus_score_norm"] = focus_result["focus_score_norm"]
                     game["half"] = normalized_half
                     print(f"        Focus = {focus_result['focus_score_norm']}")
+
                 except Exception as e:
                     print(f"[ERROR] Failed to compute focus for Game {game['game_id']}: {e}")
                     game["focus_score_norm"] = -1
 
             try:
-                if group in ["not_started", "delayed", "final"]:
+                if group in ["not_started", "final"]:
                     raw_time = game.get("game_time") or game.get("game_datetime")
                     if raw_time:
                         dt_utc = datetime.fromisoformat(raw_time.replace("Z", "+00:00"))
@@ -88,32 +84,17 @@ def rank_games(we_dict, rd_dict, favorite, follows, timezone):
             except:
                 game["_sort_time"] = datetime.max
 
-            if group in ["not_started", "delayed"]:
-                status = game.get("status", "")
-                if status == "Delayed":
-                    game["game_time"] = "Delayed"
-                elif status in ["Pre-Game", "Warmup"]:
-                    game["game_time"] = "Pre-Game"
-                else:
-                    try:
-                        dt_local = game["_sort_time"]
-                        game["game_time"] = dt_local.strftime("%-I:%M %p") + f" {tz.zone.split('/')[-1]}"
-                    except:
-                        game["game_time"] = "Scheduled"
+            if group == "not_started":
+                try:
+                    dt_local = game["_sort_time"]
+                    game["game_time"] = dt_local.strftime("%-I:%M %p") + f" {tz.zone.split('/')[-1]}"
+                except:
+                    game["game_time"] = "Scheduled"
 
             ranked[group].append(game)
 
-    in_progress_sorted = sorted(
-        ranked["in_progress"], key=lambda g: (g["priority"], -g.get("focus_score_norm", 0))
-    )
-    
-    combined_upcoming = ranked["delayed"] + ranked["not_started"]
-    combined_upcoming_sorted = sorted(
-        combined_upcoming, key=lambda g: (g["priority"], g["_sort_time"])
-    )
+    in_progress_sorted = sorted(ranked["in_progress"], key=lambda g: (g["priority"], -g.get("focus_score_norm", 0)))
+    not_started_sorted = sorted(ranked["not_started"], key=lambda g: (g["priority"], g["_sort_time"]))
+    final_sorted = sorted(ranked["final"], key=lambda g: (g["priority"], g["_sort_time"]))
 
-    final_sorted = sorted(
-        ranked["final"], key=lambda g: (g["priority"], g["_sort_time"])
-    )
-
-    return in_progress_sorted + combined_upcoming_sorted + final_sorted
+    return in_progress_sorted + not_started_sorted + final_sorted

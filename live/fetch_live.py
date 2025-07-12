@@ -75,13 +75,15 @@ def get_current_game_states() -> Dict[str, List[Dict]]:
                 "away_runs": g['away_score']
             })
 
-        elif status in ['Scheduled', 'Pre-Game', 'Warmup']:
+        # elif status in ['Scheduled', 'Pre-Game', 'Warmup']:
+        else:
+            raw_time = g.get('game_datetime') or g.get('game_time', 'N/A')
             result['not_started'].append({
                 "game_id": game_pk,
                 "status": status,
                 "home_team": home,
                 "away_team": away,
-                "game_time": g.get('game_datetime', g.get('game_time', 'N/A'))
+                "game_time": raw_time
             })
 
     print(f"[INFO] Done. {len(result['in_progress'])} in-progress, {len(result['final'])} final, {len(result['not_started'])} not started.")
