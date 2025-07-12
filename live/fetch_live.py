@@ -1,12 +1,17 @@
 from typing import List, Dict
 import statsapi
-from datetime import datetime, timezone
+import pytz
+from datetime import datetime
 
-def get_current_game_states() -> Dict[str, List[Dict]]:
-    today_str = datetime.now(timezone.utc).strftime('%Y-%m-%d')
+def get_current_game_states(timezone_str: str) -> Dict[str, List[Dict]]:
+    try:
+        tz = pytz.timezone(timezone_str)
+    except:
+        tz = pytz.UTC  # fallback
+    today_str = datetime.today().strftime('%Y-%m-%d')
     print(f"[INFO] Fetching MLB games for {today_str}")
     games = statsapi.schedule(start_date=today_str, end_date=today_str)
-    print("[DEBUG] games returned from statsapi.schedule:")
+
     result = {
         "not_started": [],
         "in_progress": [],

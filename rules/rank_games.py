@@ -31,7 +31,7 @@ def rank_games(we_dict, rd_dict, favorite, follows, timezone):
     follows = [t.lower() for t in follows]
     tz = pytz.timezone(timezone)
 
-    game_states = get_current_game_states()
+    game_states = get_current_game_states(timezone)
     ranked = {"in_progress": [], "not_started": [], "final": []}
 
     for group in ["in_progress", "not_started", "final"]:
