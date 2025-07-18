@@ -39,7 +39,10 @@ function fetchGamesAndRender() {
       .then(data => {
         const container = document.getElementById("games");
         container.innerHTML = "";
-
+          if (data.length === 0) {
+            container.innerHTML = `<div style="color: gray; font-style: italic;">Today has no scheduled MLB games.</div>`;
+            return;
+          }
         data.forEach(game => {
           const div = document.createElement("div");
           div.className = "game";
@@ -153,7 +156,11 @@ function fetchGamesAndRender() {
         });
       })
       .catch(() => {
-        document.getElementById("games").textContent = "Failed to load. Make sure server.py is running.";
+        document.getElementById("games").innerHTML = `
+          <div style="color: red; font-weight: bold;">
+            Failed to load. Please contact <a href="mailto:iskardeng@gmail.com">iskardeng@gmail.com</a> for help.
+          </div>
+        `;
       });
   });
 }

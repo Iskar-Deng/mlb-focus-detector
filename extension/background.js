@@ -57,7 +57,7 @@ chrome.runtime.onInstalled.addListener(() => {
   // Follow (checkbox)
   chrome.contextMenus.create({
     id: "follow_team",
-    title: "Follow Teams",
+    title: "Select Follow Teams",
     contexts: ["action"]
   });
 
