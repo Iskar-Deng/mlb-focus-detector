@@ -1,6 +1,6 @@
 # mlb-focus-detector
 
-[🇨🇳 中文说明](./README.zh.md)
+[🇨🇳](./README.zh.md)
 
 This is a Chrome/Edge extension that displays live MLB games with a focus score representing game intensity.
 
