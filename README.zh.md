@@ -6,6 +6,10 @@
 
 ![插件界面演示](assets/popup-demo.png)
 
+## 下载链接
+- [Chrome 商店下载](https://chromewebstore.google.com/detail/mlb-focus/laknmnfpnchmnpmojbnpehkabjklnlph)
+- [Microsoft Edge 插件商店下载](https://microsoftedge.microsoft.com/addons/detail/mlb-focus/pfangejelekehaajmelfbamecciajlhp)
+
 ## 功能特点
 
 - 显示比赛双方、比分、和局面  

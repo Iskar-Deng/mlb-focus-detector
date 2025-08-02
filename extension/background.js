@@ -103,4 +103,4 @@ function keepServerAlive() {
 
 keepServerAlive();
 
-setInterval(keepServerAlive, 60 * 1000);
+setInterval(keepServerAlive, 15 * 1000);

@@ -6,6 +6,11 @@ This is a Chrome/Edge extension that displays live MLB games with a focus score 
 
 ![Popup UI Demo](assets/popup-demo.png)
 
+## Download Links
+
+- [Chrome Web Store](https://chromewebstore.google.com/detail/mlb-focus/laknmnfpnchmnpmojbnpehkabjklnlph)
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/mlb-focus/pfangejelekehaajmelfbamecciajlhp)
+
 ## Features
 
 - Shows teams, scores, inning, and outs  
@@ -26,16 +31,6 @@ Final score is normalized to an integer, where 100 represents the start of the g
 The more a scoring event would swing the win probability, the higher the focus score.
 
 ## How to Use
-
-### Install the extension manually
-
-1. Download and unzip the `extension.zip` file from this repository  
-2. Open **Chrome** or **Edge**, go to `chrome://extensions`  
-3. Enable **Developer Mode**  
-4. Click **“Load unpacked”**, and select the unzipped `extension` folder  
-5. The extension icon should now appear in your toolbar  
-
-### Use the extension
 
 - Click the extension icon to view today's MLB games  
 - Click a game to open its **MLB Gameday** page  
